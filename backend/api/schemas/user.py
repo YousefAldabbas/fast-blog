@@ -56,3 +56,13 @@ class User(UserInDBBase):
 # Additional properties stored in DB
 class UserInDB(UserInDBBase):
     hashed_password: str
+
+
+# testing
+
+class TestUserInDB(UserInDBBase):
+    id: int
+    hashed_password: str
+    is_active: Optional[bool] = True
+    created_at: datetime = None
+    updated_at: datetime = None
