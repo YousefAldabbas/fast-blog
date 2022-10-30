@@ -44,7 +44,7 @@ class BlogInDBBase(BaseModel):
 class Blog(BlogInDBBase):
     title: str
     body: str
-    # publisher: Publisher
+    publisher: Publisher
     user_id: int
     created_at: datetime
     updated_at: Optional[datetime] = None

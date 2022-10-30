@@ -20,3 +20,18 @@ def show(id, db: Session):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"User with the id {id} is not exist")
     return user
+
+
+
+def update(req,current_user, db: Session):
+    db_user = db.query(models.User).filter(models.User.id == current_user.id).first()
+    if not db_user:
+        raise Exception("user not found")
+    user_data = req.dict(exclude_unset=True)
+    for key, value in user_data.items():
+            setattr(db_user, key, value)
+    
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user

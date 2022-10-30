@@ -5,25 +5,15 @@ from typing import List, Union, Optional
 from pydantic import BaseModel, root_validator, EmailStr
 
 # Shared properties
-
-
 class UserBase(BaseModel):
     email: Optional[EmailStr] = None
     full_name: Optional[str] = None
     username: Optional[str] = None
 
-    # class Config:
-    #     validate_assignment = True
-
-    # @root_validator
-    # def number_validator(cls, values):
-    #     values["updated_at"] = datetime.now()
-    #     return values
-
 
 # Properties to receive via API on creation
 class UserCreate(UserBase):
-    email: EmailStr
+    # email: EmailStr
     password: str
 
 
@@ -39,18 +29,19 @@ class UserInDBBase(UserBase):
 
 
 class Publisher(UserBase):
-    email: Optional[EmailStr] = None
-    full_name: Optional[str] = None
-    username: Optional[str] = None
+    class Config:
+        orm_mode = True
 
+class Commenter(UserBase):
     class Config:
         orm_mode = True
 
 
 # Additional properties to return via API
 class User(UserInDBBase):
-    is_active: Optional[bool] = True
-    is_superuser: bool = False
+    # is_active: Optional[bool] = True
+    # is_superuser: bool = False
+    pass
 
 
 # Additional properties stored in DB

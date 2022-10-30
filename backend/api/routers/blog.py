@@ -42,7 +42,3 @@ async def update(id: int, req: schemas.blog.BlogCreate, db: Session = Depends(ge
 def show(id: int, db: Session = Depends(get_db)):
     return blog.get_one(id, db)
 
-
-@router.post('/{id}/comment/')
-def add_comment(id: int, req: Comment, db: Session = Depends(get_db), current_user=Depends(security.get_current_user)):
-    return comment.add(id, req, db)

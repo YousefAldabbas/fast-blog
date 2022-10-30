@@ -21,3 +21,4 @@ class Comment(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     blog_id = Column(Integer, ForeignKey('blogs.id'))
     blog = relationship("Blog", back_populates="comments")
+    user = relationship("User", back_populates="comments")
