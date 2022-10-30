@@ -44,4 +44,4 @@ has permissions to access.
 
 * [Show An Account]() : `GET /api/user/me/` 
 * [Update An Account](): `PATCH /api/user/` 
-* [Delete An Account](): `DELETE /api/user/` **donesn't done*
+* [Delete An Account](): `DELETE /api/user/`
