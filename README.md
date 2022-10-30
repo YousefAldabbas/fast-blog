@@ -42,6 +42,6 @@ Token is provided with the request:
 Endpoints for viewing and manipulating the Accounts that the Authenticated User
 has permissions to access.
 
-* [Show An Account]() : `GET /api/user/me/` **donesn't done*
-* [Update An Account](): `PATCH /api/user/` **donesn't done*
+* [Show An Account]() : `GET /api/user/me/` 
+* [Update An Account](): `PATCH /api/user/` 
 * [Delete An Account](): `DELETE /api/user/` **donesn't done*
