@@ -34,7 +34,7 @@ Token is provided with the request:
 
 ### Blog
 * [Publish a blog](./documentation/Blog/Publish.md) : `POST /api/blog/`
-* [Update a blog]() : `UPDATE /api/blog/:id` **Should be PATCH*
+* [Update a blog]() : `UPDATE /api/blog/:id`
 * [Delete a blog]() : `DELETE /api/blog/:id`
 
 ### Account related
