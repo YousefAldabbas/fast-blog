@@ -1,21 +1,39 @@
+from ..schemas.user import UserCreate, UserUpdate
+from ..models.user import User
 from fastapi import APIRouter, Depends, status, HTTPException
 from .. import schemas, models
 from ..config import get_db
 from sqlalchemy.orm import Session
 from ..controllers import user
+from .. import security
+
 router = APIRouter(
     prefix='/user',
     tags=['users']
 )
 
-# get_db = database.get_db
 
-
+# create new user
 @router.post('/', response_model=schemas.User, status_code=status.HTTP_201_CREATED)
 def create_user(req: schemas.user.UserCreate, db: Session = Depends(get_db)):
     return user.create(req, db)
+
+# show current user information
+@router.get('/me', response_model=schemas.user.TestUserInDB)
+def show_me(db: Session = Depends(get_db), current_user=Depends(security.get_current_user)):
+    return current_user
+
+
+# show current user information
+# https://sqlmodel.tiangolo.com/tutorial/fastapi/update/
+@router.patch('/me', response_model=schemas.user.TestUserInDB)
+def show_me(req: UserUpdate, db: Session = Depends(get_db), current_user=Depends(security.get_current_user)):
+    return user.me(req,current_user,db)
 
 
 @router.get('/{id}', response_model=schemas.user.TestUserInDB)
 def show_user(id: int, db: Session = Depends(get_db)):
     return user.show(id, db)
+
+
+
