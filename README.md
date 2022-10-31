@@ -34,7 +34,7 @@ Token is provided with the request:
 
 ### Blog
 * [Publish a blog](./documentation/Blog/Publish.md) : `POST /api/blog/`
-* [Update a blog]() : `UPDATE /api/blog/:id` **Should be PATCH*
+* [Update a blog]() : `UPDATE /api/blog/:id`
 * [Delete a blog]() : `DELETE /api/blog/:id`
 
 ### Account related
@@ -44,4 +44,4 @@ has permissions to access.
 
 * [Show An Account]() : `GET /api/user/me/` 
 * [Update An Account](): `PATCH /api/user/` 
-* [Delete An Account](): `DELETE /api/user/` **donesn't done*
+* [Delete An Account](): `DELETE /api/user/`
