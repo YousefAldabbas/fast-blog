@@ -25,10 +25,15 @@ def show(id, db: Session):
 def update(req, current_user, db: Session):
     db_user = db.query(models.User).filter(
         models.User.id == current_user.id).first()
+
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
     user_data = req.dict(exclude_unset=True)
+
     for key, value in user_data.items():
+        if key == 'password':
+            key = 'hashed_password'
+            value = get_password_hash(value)
         setattr(db_user, key, value)
 
     db.add(db_user)

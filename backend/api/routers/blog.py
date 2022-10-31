@@ -30,12 +30,12 @@ async def create(req: schemas.blog.BlogCreate, db: Session = Depends(get_db), cu
 
 @router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
 async def destroy(id: int, db: Session = Depends(get_db), current_user=Depends(security.get_current_user)):
-    return blog.delete(id, db)
+    return blog.delete(id, db, int(current_user.id))
 
 
 @router.patch('/{id}', status_code=status.HTTP_202_ACCEPTED)
 async def update(id: int, req: schemas.blog.BlogCreate, db: Session = Depends(get_db), current_user=Depends(security.get_current_user)) -> dict:
-    return blog.update(id, req, db)
+    return blog.update(id, req, db, int(current_user.id))
 
 
 @router.get('/{id}', status_code=status.HTTP_200_OK, response_model=Blog)

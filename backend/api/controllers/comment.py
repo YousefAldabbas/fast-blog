@@ -19,7 +19,7 @@ def update(id, req, db: Session,user_id):
         raise HTTPException(status_code=404, detail="Comment not found")
     if comment.user_id != user_id:
         raise HTTPException(
-            status_code=404, detail="User doesn't have the permission to delete another user comment")
+            status_code=401, detail="User doesn't have the permission to delete another user comment")
     comment_data = req.dict(exclude_unset=True)
     for key, value in comment_data.items():
         setattr(comment, key, value)
@@ -30,14 +30,14 @@ def update(id, req, db: Session,user_id):
     return comment
 
 
-def delete(id: int, db: Session, current_user):
+def delete(id: int, db: Session, user_id):
     comment = db.query(models.Comment).filter(
         models.Comment.id == id).first()
     if not comment:
         raise HTTPException(status_code=404, detail="Comment not found")
-    if comment.user_id != current_user.id:
+    if comment.user_id != user_id:
         raise HTTPException(
-            status_code=404, detail="User doesn't have the permission to delete another user comment")
+            status_code=401, detail="User doesn't have the permission to delete another user comment")
     db.delete(comment)
     db.commit()
     return "done"

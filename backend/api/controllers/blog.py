@@ -19,33 +19,41 @@ def get_one(id, db: Session):
 def create(req, db: Session, user_id):
     new_blog = models.Blog(
         title=req.title, body=req.body, user_id=int(user_id))
-#     if not new_blog:
-#         raise HTTPException(
-# status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="server")
+    if not new_blog:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="server")
     db.add(new_blog)
     db.commit()
     db.refresh(new_blog)
     print(new_blog)
     return new_blog
 
-def delete(id: int, db: Session):
-    blog = db.query(models.Blog).filter(models.Blog.id == id)
 
+def delete(id: int, db: Session, user_id):
+    blog = db.query(models.Blog).filter(models.Blog.id == id).first()
+    
     if not blog:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="not found")
+
+    if blog.user_id != user_id:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User doen't have the permission to complete the proccess")
 
     blog.delete(synchronize_session=False)
     db.commit()
     return 'done'
 
 
-def update(id: int, req, db: Session):
-    blog = db.query(models.Blog).filter(models.Blog.id == id)
+def update(id: int, req, db: Session, user_id):
+    blog = db.query(models.Blog).filter(models.Blog.id == id).first()
 
     if not blog:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="not found")
+    if blog.user_id != user_id:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User doen't have the permission to complete the proccess")
 
     blog_data = req.dict(exclude_unset=True)
     for key, value in blog_data.items():

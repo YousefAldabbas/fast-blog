@@ -18,21 +18,21 @@ def create_user(req: schemas.user.UserCreate, db: Session = Depends(get_db)):
     return user.create(req, db)
 
 
-@router.get('/me', response_model=schemas.user.TestUserInDB)
+@router.get('/me', response_model=schemas.user.User)
 def show_me(current_user=Depends(security.get_current_user)):
     return current_user
 
 
 # show current user information
 # https://sqlmodel.tiangolo.com/tutorial/fastapi/update/
-@router.patch('/me', response_model=schemas.user.TestUserInDB)
+@router.patch('/me', response_model=schemas.user.User)
 def update_info(req: UserUpdate, db: Session = Depends(get_db), current_user=Depends(security.get_current_user)):
-    return user.me(req,current_user,db)
+    return user.update(req,current_user,db)
 
-@router.delete('/',response_model=schemas.user.TestUserInDB)
+@router.delete('/',response_model=schemas.user.User)
 def delete_me(db: Session = Depends(get_db), current_user = Depends(security.get_current_user)):
     return user.delete(current_user.id,db)
 
-@router.get('/{id}', response_model=schemas.user.TestUserInDB)
-def show_user(id: int, db: Session = Depends(get_db)):
-    return user.show(id, db)
+# @router.get('/{id}', response_model=schemas.user.TestUserInDB)
+# def show_user(id: int, db: Session = Depends(get_db)):
+#     return user.show(id, db)

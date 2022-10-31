@@ -92,3 +92,19 @@ def verify_password(hashed_password: str, plain_password: str) -> bool:
 
 def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
+
+
+
+def get_tokens(payload):
+
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    refresh_token_expires = timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        payload, expires_delta=access_token_expires
+    )
+    refresh_token = create_refresh_token(
+        payload, expires_delta=refresh_token_expires
+    )
+    return {"access_token": access_token,
+            "refresh_token": refresh_token,
+            "token_type": "bearer"}

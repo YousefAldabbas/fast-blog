@@ -26,6 +26,7 @@ class BlogBase(BaseModel):
 class BlogCreate(BaseModel):
     title: str
     body: str
+
     # class Config():
     #     orm_mode = True
 
@@ -33,6 +34,7 @@ class BlogCreate(BaseModel):
 
 
 class BlogUpdate(BlogBase):
+    user_id : int
     pass
 
 
@@ -42,6 +44,7 @@ class BlogInDBBase(BaseModel):
 
 # Properties to return to client
 class Blog(BlogInDBBase):
+    id: int
     title: str
     body: str
     publisher: Publisher

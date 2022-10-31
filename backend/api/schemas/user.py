@@ -40,8 +40,11 @@ class Commenter(UserBase):
 # Additional properties to return via API
 class User(UserInDBBase):
     # is_active: Optional[bool] = True
-    # is_superuser: bool = False
-    pass
+    id: int
+    is_superuser: bool = False
+    class Config:
+        orm_mode = True
+
 
 
 # Additional properties stored in DB
