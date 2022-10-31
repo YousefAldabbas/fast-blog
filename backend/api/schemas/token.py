@@ -11,3 +11,4 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     sub: Optional[int] = None
+    scope: Optional[str] = None

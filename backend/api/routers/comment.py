@@ -15,14 +15,16 @@ router = APIRouter(
 )
 
 
-
-@router.post('/{id}/comment/')
+@router.post('/{id}/comments/')
 def add_comment(id: int, req: CommentCreate, db: Session = Depends(get_db), current_user=Depends(security.get_current_user)):
-    return comment.add(id, req, db)
+    return comment.add(id, req, db, current_user.id)
 
 
-@router.patch('/{id}/comment/')
-def update_comment(id: int, req: Comment, db: Session = Depends(get_db), current_user=Depends(security.get_current_user)):
-    return comment.update(id, req, db)
+@router.patch('/{id}/comments/{comment_id}')
+def update_comment(id: int, comment_id: int, req: Comment, db: Session = Depends(get_db), current_user=Depends(security.get_current_user)):
+    return comment.update(comment_id, req, db, current_user.id)
 
 
+@router.delete('/{id}/comments/')
+def delete_comment(id: int, db: Session = Depends(get_db), current_user=Depends(security.get_current_user)):
+    return comment.delete(id, db, current_user)

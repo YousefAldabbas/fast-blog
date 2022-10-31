@@ -3,32 +3,41 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 
 
-def add(id, req, db: Session):
-    new_comment = models.Comment(text=req.text, blog_id=id, user_id=1)
+def add(id, req, db: Session, user_id):
+    new_comment = models.Comment(text=req.text, blog_id=id, user_id=int(user_id))
     db.add(new_comment)
     db.commit()
     db.refresh(new_comment)
     return new_comment
 
 
-def update(id, req, db: Session):
-    db_comment = db. db_user = db.query(models.User).filter(
-        models.Comment.id == req.id).first()
+def update(id, req, db: Session,user_id):
+    comment = db.query(models.Comment).filter(
+        models.Comment.id == id).first()
 
-    if not db_comment:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"comment doesn't exist")
-
-    if db.comment.user_id != id:
+    if not comment:
+        raise HTTPException(status_code=404, detail="Comment not found")
+    if comment.user_id != user_id:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="un authorized",
-        )
+            status_code=404, detail="User doesn't have the permission to delete another user comment")
     comment_data = req.dict(exclude_unset=True)
     for key, value in comment_data.items():
-        setattr(db_comment, key, value)
+        setattr(comment, key, value)
 
-    db.add(db_comment)
+    db.add(comment)
     db.commit()
-    db.refresh(db_comment)
-    return db_comment
+    db.refresh(comment)
+    return comment
+
+
+def delete(id: int, db: Session, current_user):
+    comment = db.query(models.Comment).filter(
+        models.Comment.id == id).first()
+    if not comment:
+        raise HTTPException(status_code=404, detail="Comment not found")
+    if comment.user_id != current_user.id:
+        raise HTTPException(
+            status_code=404, detail="User doesn't have the permission to delete another user comment")
+    db.delete(comment)
+    db.commit()
+    return "done"

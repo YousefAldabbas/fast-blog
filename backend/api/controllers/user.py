@@ -22,16 +22,26 @@ def show(id, db: Session):
     return user
 
 
-
-def update(req,current_user, db: Session):
-    db_user = db.query(models.User).filter(models.User.id == current_user.id).first()
+def update(req, current_user, db: Session):
+    db_user = db.query(models.User).filter(
+        models.User.id == current_user.id).first()
     if not db_user:
-        raise Exception("user not found")
+        raise HTTPException(status_code=404, detail="User not found")
     user_data = req.dict(exclude_unset=True)
     for key, value in user_data.items():
-            setattr(db_user, key, value)
-    
+        setattr(db_user, key, value)
+
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
+
+
+def delete(id, db:Session):
+    user = db.query(models.User).filter(
+        models.User.id == id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    db.delete(user)
+    db.commit()
+    return {"ok": True}

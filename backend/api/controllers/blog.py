@@ -17,15 +17,16 @@ def get_one(id, db: Session):
 
 
 def create(req, db: Session, user_id):
-    print(req)
-    new_blog = models.Blog(title=req.title, body=req.body, user_id=int(user_id))
+    new_blog = models.Blog(
+        title=req.title, body=req.body, user_id=int(user_id))
+#     if not new_blog:
+#         raise HTTPException(
+# status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="server")
     db.add(new_blog)
     db.commit()
     db.refresh(new_blog)
     print(new_blog)
-
     return new_blog
-
 
 def delete(id: int, db: Session):
     blog = db.query(models.Blog).filter(models.Blog.id == id)
@@ -33,6 +34,7 @@ def delete(id: int, db: Session):
     if not blog:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="not found")
+
     blog.delete(synchronize_session=False)
     db.commit()
     return 'done'
@@ -44,6 +46,13 @@ def update(id: int, req, db: Session):
     if not blog:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="not found")
-    blog.update({"title": req.title, "body": req.body})
+
+    blog_data = req.dict(exclude_unset=True)
+    for key, value in blog_data.items():
+        setattr(blog, key, value)
+
+    db.add(blog)
     db.commit()
-    return "updated"
+    db.refresh(blog)
+
+    return blog
