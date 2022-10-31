@@ -15,7 +15,7 @@ Open endpoints require no Authentication.
 
 ### User
 * [Register](./documentation/User/Register.md) : `POST /api/user/`
-* [Show info](./documentation/User/Show.md) : `GET /api/user/:id` **for testing pourpos*
+* [Show info](./documentation/User/Show.md) : `GET /api/user/:id` **for testing purpose*
 
 ### Blog
 * [Show All](All.md) : `GET /api/blog/`
@@ -45,3 +45,4 @@ has permissions to access.
 * [Show An Account]() : `GET /api/user/me/` 
 * [Update An Account](): `PATCH /api/user/` 
 * [Delete An Account](): `DELETE /api/user/`
+* [Refresh Token](): /api/refresh
